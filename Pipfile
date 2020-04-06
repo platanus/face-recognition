@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+torch = "~=1.4.0"
+torchvision = "*"
+sklearn = "*"
+numpy = "*"
+facenet-pytorch = "*"
+
+[dev-packages]
+black = "==19.10b0"
+flake8 = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true

@@ -6,12 +6,13 @@ import torch
 from helpers.simple_metric_report import report
 
 DEFAULT_THRESHOLD = 1
-DEFAULT_DISTANCE = 'euclidean'
+DEFAULT_DISTANCE = "euclidean"
 DEFAULT_INITIAL_TRAIN_STEP = 0.5
 DEFAULT_FP = 0
 DEFAULT_STEP_MODIFIER = 3 / 4
 ACC_STATIONARY_STOP = 10
 MAX_TRAIN_ITERATIONS = 100
+
 
 def get_false_positives(labels, predictions):
     conf_matrix = confusion_matrix(labels, predictions)
@@ -19,16 +20,24 @@ def get_false_positives(labels, predictions):
     hits = accuracy_score(labels, predictions, normalize=False)
     return len(labels) - hits - wrong_not_recognized
 
-class DistanceClassifier(ABC):
 
+class DistanceClassifier(ABC):
     def __init__(self, threshold=DEFAULT_THRESHOLD, distance_metric=DEFAULT_DISTANCE):
         self.threshold = threshold
         self.distance_metric = DistanceMetric.get_metric(distance_metric)
         self.embeddings = torch.Tensor([])
         self.labels = np.array([])
-    
-    def __train_threshold(self, embeddings, labels, max_fp, initial_step, step_modifier,
-                          max_train_iterations, acc_stationary_stop):
+
+    def __train_threshold(
+        self,
+        embeddings,
+        labels,
+        max_fp,
+        initial_step,
+        step_modifier,
+        max_train_iterations,
+        acc_stationary_stop,
+    ):
         step = initial_step
         step_sign = -1
         previous_accuracy = 0
@@ -43,7 +52,10 @@ class DistanceClassifier(ABC):
                 accuracy_stationary_count += 1
             else:
                 accuracy_stationary_count = 0
-            if accuracy_stationary_count >= acc_stationary_stop and false_positives <= max_fp:
+            if (
+                accuracy_stationary_count >= acc_stationary_stop
+                and false_positives <= max_fp
+            ):
                 break
             if false_positives > max_fp:
                 if step_sign == 1:
@@ -56,10 +68,18 @@ class DistanceClassifier(ABC):
             iteration_count += 1
             previous_accuracy = actual_accuracy
         return actual_accuracy, false_positives
-    
-    def fit(self, embeddings, labels, max_fp=DEFAULT_FP, initial_threshold=DEFAULT_THRESHOLD,
-            initial_train_step=DEFAULT_INITIAL_TRAIN_STEP, step_modifier=DEFAULT_STEP_MODIFIER,
-            max_train_iterations=MAX_TRAIN_ITERATIONS, acc_stationary_stop=ACC_STATIONARY_STOP):
+
+    def fit(
+        self,
+        embeddings,
+        labels,
+        max_fp=DEFAULT_FP,
+        initial_threshold=DEFAULT_THRESHOLD,
+        initial_train_step=DEFAULT_INITIAL_TRAIN_STEP,
+        step_modifier=DEFAULT_STEP_MODIFIER,
+        max_train_iterations=MAX_TRAIN_ITERATIONS,
+        acc_stationary_stop=ACC_STATIONARY_STOP,
+    ):
         self.threshold = initial_threshold
         first_occ_labels, first_occ_indices = np.unique(labels, return_index=True)
         first_unknown_index = np.argwhere(first_occ_labels == -1)
@@ -74,11 +94,16 @@ class DistanceClassifier(ABC):
             initial_train_step,
             step_modifier,
             max_train_iterations,
-            acc_stationary_stop
+            acc_stationary_stop,
         )
-        report({'accuracy': final_acc, 'false positives': final_fp, 'threshold': self.threshold})
+        report(
+            {
+                "accuracy": final_acc,
+                "false positives": final_fp,
+                "threshold": self.threshold,
+            }
+        )
 
     @abstractmethod
     def predict(self, test_embeddings):
         pass
-
