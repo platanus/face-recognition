@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-torch = "~=1.4.0"
+torch = "*"
 torchvision = "*"
 sklearn = "*"
 numpy = "*"
 facenet-pytorch = "*"
+opencv-python = "*"
 
 [dev-packages]
 black = "==19.10b0"
