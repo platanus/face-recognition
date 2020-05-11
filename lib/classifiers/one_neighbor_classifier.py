@@ -1,4 +1,4 @@
-from distance_classifier import DistanceClassifier
+from .distance_classifier import DistanceClassifier
 import numpy as np
 
 
