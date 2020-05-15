@@ -35,5 +35,16 @@ class FaceSpace:
         data_aligned = torch.stack(data_aligned).to(self.device)
         batches = []
         for batch in data_aligned.split(self.batch_size, dim=0):
-            batches.append(self.resnet(batch).detach().cpu())
+            with torch.no_grad():
+                batches.append(self.resnet(batch).detach().cpu())
         return torch.cat(batches, dim=0), data_names
+
+    def detect_faces_from_images(self, images):
+        x_aligned, _ = self.mtcnn(images, return_prob=True)
+        return x_aligned
+
+    def get_embeddings_from_images(self, images):
+        data_aligned = torch.stack(self.detect_faces_from_images(images)).to(self.device)
+        with torch.no_grad():
+            embeddings = self.resnet(data_aligned)
+        return embeddings
