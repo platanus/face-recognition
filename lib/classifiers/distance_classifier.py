@@ -79,6 +79,7 @@ class DistanceClassifier(ABC):
         step_modifier=DEFAULT_STEP_MODIFIER,
         max_train_iterations=MAX_TRAIN_ITERATIONS,
         acc_stationary_stop=ACC_STATIONARY_STOP,
+        verbose=False
     ):
         self.threshold = initial_threshold
         first_occ_labels, first_occ_indices = np.unique(labels, return_index=True)
@@ -96,13 +97,14 @@ class DistanceClassifier(ABC):
             max_train_iterations,
             acc_stationary_stop,
         )
-        report(
-            {
-                "accuracy": final_acc,
-                "false positives": final_fp,
-                "threshold": self.threshold,
-            }
-        )
+        if verbose:
+            report(
+                {
+                    "accuracy": final_acc,
+                    "false positives": final_fp,
+                    "threshold": self.threshold,
+                }
+            )
 
     @abstractmethod
     def predict(self, test_embeddings):
