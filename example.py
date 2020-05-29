@@ -1,4 +1,4 @@
-from lib.face_recognizers import OneNeighborRecognizer
+from face_recognition.face_recognizers import OneNeighborRecognizer
 from PIL import Image
 
 IMAGES_PATH = './datasets/platanus_all_faces'

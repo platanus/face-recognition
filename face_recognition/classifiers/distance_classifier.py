@@ -3,7 +3,7 @@ from sklearn.neighbors import DistanceMetric
 from sklearn.metrics import accuracy_score, confusion_matrix
 import numpy as np
 import torch
-from lib.helpers.simple_metric_report import report
+from face_recognition.helpers.simple_metric_report import report
 
 DEFAULT_THRESHOLD = 1
 DEFAULT_DISTANCE = "euclidean"
