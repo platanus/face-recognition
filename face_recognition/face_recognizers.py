@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from .face_space import FaceSpace
-from lib.classifiers import OneNeighborClassifier
+from face_recognition.classifiers import OneNeighborClassifier
 
 
 class OneNeighborRecognizer:
