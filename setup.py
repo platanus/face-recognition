@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pl_face_recognition",
-    version="0.0.2",
+    version="0.1.0",
     author="Platanus",
     author_email="andres.cadiz@platan.us",
     description="A package for out of the box face recognition learning",
@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'torch',
+        'torch>=1.0.0',
         'torchvision',
         'sklearn',
         'numpy',
