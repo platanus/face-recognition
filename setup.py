@@ -19,7 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'torch',
+        'torch>=1.0.0',
         'torchvision',
         'sklearn',
         'numpy',
